@@ -1,0 +1,231 @@
+using System;
+
+namespace Bank
+{
+    
+    
+        class Bank
+        {
+            private String accountNo;
+            private String userName;
+            private long balance;
+
+           
+
+            //method to open an account
+            public void AddAccount()
+            {
+                Console.WriteLine("Enter Account No: ");
+                accountNo = Console.ReadLine();
+                Console.WriteLine("Enter userName: ");
+                userName = Console.ReadLine();
+                Console.WriteLine("Enter Balance: ");
+                balance = Convert.ToInt32(Console.ReadLine());
+
+            }
+
+            //method to display account details
+            public void DisplayAccount()
+            {
+                Console.WriteLine(accountNo + "," + userName + "," + balance);
+            }
+
+            //method to deposit money
+            public void Deposit()
+            {
+                long amount;
+                Console.WriteLine("Enter Amount to be Deposited : ");
+                amount = Convert.ToInt32(Console.ReadLine());
+                balance = balance + amount;
+            }
+
+            //method to withdraw money
+            public void Withdraw(string accountType)
+            {
+                long amount;
+                Console.WriteLine("Enter Amount to be withdrawn ");
+                amount = Convert.ToInt32(Console.ReadLine());
+                if (balance >= amount && accountType != "DMAT")
+                {
+                    balance = balance - amount;
+                }
+                else
+                {
+                     if (balance-amount > -10000)
+                     {
+                      balance = amount - balance;
+                     }
+                     else { Console.WriteLine("minbalance is already will cross -10000 limit" ); }
+                }
+            }
+        public void Withdraw()
+                  {
+                     long amount;
+                     Console.WriteLine("Enter Amount to be withdrawn ");
+                     amount = Convert.ToInt32(Console.ReadLine());
+                    if (balance >= amount)
+                    {
+                        balance = balance - amount;
+                    }
+                    else
+                    {
+                         Console.WriteLine("Transaction Faiure coz of low balance.");
+                    }
+        }
+        public void RateOfInterest(int Interest, int years)
+        {
+            double bal = Convert.ToDouble(balance);
+            if(Interest==1)
+            {
+                bal = bal+ (bal * 0.04)*years;
+
+            }
+            else if(Interest==2)
+            {
+                bal = bal + (bal * 0.01) * years;
+            }
+            else
+            {
+
+            }
+            Console.WriteLine(bal); 
+        }
+
+        //method to BinarySearch an account number
+        public bool BinarySearch(String acn)
+            {
+                if (accountNo.Equals(acn))
+                {
+                    DisplayAccount();
+                    return (true);
+                }
+                return (false);
+            }
+        }
+
+        class ExBank
+        {
+            public static void Main(String [] arg)
+            {
+                //create initial accounts
+                Console.WriteLine("no. of Customer: ");
+                int n = Convert.ToInt32(Console.ReadLine());
+                Bank [] C= new Bank[n];
+                for (int i = 0; i < C.Length; i++)
+                {
+
+                    C[i] = new Bank();
+                    C[i].AddAccount();
+                }
+
+                //run loop until menu 5 is not pressed
+                int ch;
+                do
+                {
+                    Console.WriteLine("Menu\n 1.Display All\n 2.BinarySearch \n 3.Deposit\n 4.Withdraw\n 5.Interest \n6. exit");
+        
+                    Console.WriteLine(" Choice :");
+                    ch = Convert.ToInt32(Console.ReadLine());
+                    switch (ch)
+                    {
+                        case 1:
+                            for (int ai = 0; ai < C.Length; ai++)
+                            {
+                                C[ai].DisplayAccount();
+                            }
+                            break;
+
+                        case 2:
+                            Console.WriteLine("Enter Account ID to BinarySearch ");
+                            String acn = Console.ReadLine();
+                            bool foundMatch = false;
+                            for (int ai = 0; ai < C.Length; ai++)
+                            {
+                                foundMatch = C[ai].BinarySearch(acn);
+                                if (foundMatch)
+                                {
+                                    break;
+                                }
+                            }
+                            if (!foundMatch)
+                            {
+                                Console.WriteLine("BinarySearch Failed..");
+                            }
+                            break;
+
+                        case 3:
+                            Console.WriteLine("Enter Account ID : ");
+                            acn = Console.ReadLine();
+                            foundMatch = false;
+                            for (int ai = 0; ai < C.Length; ai++)
+                            {
+                                foundMatch = C[ai].BinarySearch(acn);
+                                if (foundMatch)
+                                {
+                                    C[ai].Deposit();
+                                    break;
+                                }
+                            }
+                            if (!foundMatch)
+                            {
+                                Console.WriteLine("BinarySearch Failed..");
+                            }
+                            break;
+
+                        case 4:
+                            Console.WriteLine("Enter Account ID: ");
+                            acn = Console.ReadLine();
+                            foundMatch = false;
+                            for (int ai = 0; ai < C.Length; ai++)
+                            {
+                                foundMatch = C[ai].BinarySearch(acn);
+                                if (foundMatch)
+                                {
+                                Console.WriteLine("enter the account tag as saving-1 / current-2 /dmat-3 ");
+                                    String accountType = Console.ReadLine();
+                                    if (accountType == "DMAT"||accountType=="dmat")
+                                    {
+                                        C[ai].Withdraw(accountType);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        C[ai].Withdraw();
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!foundMatch)
+                            {
+                                Console.WriteLine("BinarySearch Failed..");
+                            }
+                            break;
+
+                        case 5:
+                            Console.WriteLine("enter number of years you want to calculate interest for");
+                            int years = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("enter index of\n 1.Savings acc \n 2.current \n 3.DMAT");
+                            int choice = Convert.ToInt32(Console.ReadLine());
+                            int i= 0;
+                            C[i].RateOfInterest(choice,years);
+                            
+
+
+                            break;
+
+                        case 6:   
+                            break;
+                    }
+                }
+                while (ch != 5);
+            }
+        }
+
+
+    /*static void Main(string[] args)
+    {
+        Console.WriteLine("Hello World!");
+
+    }*/
+}
+
