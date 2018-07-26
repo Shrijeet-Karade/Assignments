@@ -1,0 +1,144 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmployeeConsole
+{
+    public class Employee
+    {
+        public string name { get; set; }
+        public int empid { get; set; }
+        public long contact { get; set; }
+    }
+    public class Test 
+    {
+        public static void MainCall(int option)
+        {
+            Int32 empId1 = 0;
+            switch (option)
+            {
+                case 1:
+                    AddEmployee();
+                    break;
+                case 2:
+                    DisplayList();
+                    int option1 = DisplayMainMenu();
+                    MainCall(option1);
+                    break;
+                case 3:
+                   
+                    Console.WriteLine("exit!");
+                    break;
+                default:
+                    Console.WriteLine("Invalid Input");
+                    int option2 = DisplayMainMenu();
+                    MainCall(option2);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Display Main menu
+        /// </summary>
+        private static int DisplayMainMenu()
+        {
+            Console.WriteLine("\nSelect any option:");
+            Console.WriteLine("1. Add Employee");
+            Console.WriteLine("2. Display Employee");
+            Console.WriteLine("3. Exit");
+            
+
+            Int32 option = 0;
+            try
+            {
+                option = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Some Error Occured");
+            }
+            return option;
+        }
+
+        /// <summary>
+        /// Add New Employee
+        /// </summary>
+        private static List<Employee> AddEmployee()
+        {
+            Employee employee = new Employee();
+            try
+            {
+                Console.WriteLine("Enter Employee:");
+                Console.WriteLine("Enter Name");
+                employee.name = Console.ReadLine();
+                Console.WriteLine("Enter Emp ID");
+                employee.empid = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter Contact");
+                employee.contact = Convert.ToInt32(Console.ReadLine());
+                if (empDetail.Count > 0)
+                {
+                    if (empDetail.Exists(emp => emp.empid == employee.empid))
+                    {
+                        Console.WriteLine("Employee already exists with id:" + employee.empid);
+                    }
+                    else
+                    {   
+
+                        empDetail.Add(employee);
+
+                    }
+                }
+                else
+                {
+                    empDetail.Add(employee);
+                    Console.WriteLine("Employee successfully Added");
+                }
+                Console.WriteLine(@"Do you want to add more Employee? Y\N");
+                char choice = Console.ReadKey().KeyChar;
+                switch (Char.ToUpper(choice))
+                {
+                    case 'Y':
+                        AddEmployee();
+                        break;
+                    case 'N':
+                        Int32 option1 = DisplayMainMenu();
+                        MainCall(option1);
+                        break;
+                    default:
+                        Console.WriteLine("select right option");
+                        //Console.WriteLine("-----------------------------------------------");
+                        option1 = DisplayMainMenu();
+                        MainCall(option1);
+                        break;
+
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("select right option");
+                //Console.WriteLine("-----------------------------------------------");
+                int option1 = DisplayMainMenu();
+                MainCall(option1);
+            }
+            return empDetail;
+        }
+
+        /// <summary>
+        /// Display Employee List
+        /// </summary>
+        private static void DisplayList()
+        {
+            
+            foreach (Employee emp in empDetail)
+            {
+                Console.WriteLine("Employee ID:" + emp.empid + " Name:" + emp.name + " Contact:" + emp.contact);
+            }
+        }
+
+        
+        
+    }
+}
